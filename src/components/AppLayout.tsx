@@ -1,12 +1,21 @@
-import InstallAppButton from "./InstallAppButton";
 import {
   NavLink,
   Outlet,
   useLocation,
 } from "react-router";
+
+import { useAuth } from "../contexts/AuthContext";
+import InstallAppButton from "./InstallAppButton";
 import ReminderWatcher from "./ReminderWatcher";
 
-const navigation = [
+interface NavigationItem {
+  to: string;
+  label: string;
+  icon: string;
+  end: boolean;
+}
+
+const mainNavigation: NavigationItem[] = [
   {
     to: "/",
     label: "首页",
@@ -33,24 +42,78 @@ const navigation = [
   },
 ];
 
+function getUserDisplayName(
+  user: ReturnType<typeof useAuth>["user"],
+) {
+  if (!user) {
+    return "登录";
+  }
+
+  const metadataName =
+    user.user_metadata?.display_name;
+
+  if (
+    typeof metadataName === "string" &&
+    metadataName.trim()
+  ) {
+    return metadataName.trim();
+  }
+
+  if (user.email) {
+    return user.email.split("@")[0];
+  }
+
+  return "账户";
+}
+
 export default function AppLayout() {
   const location = useLocation();
+
+  const {
+    user,
+    loading,
+  } = useAuth();
+
+  const accountNavigation: NavigationItem = {
+    to: user ? "/account" : "/login",
+    label: loading
+      ? "账户"
+      : getUserDisplayName(user),
+    icon: user ? "●" : "○",
+    end: false,
+  };
+
+  const navigation = [
+    ...mainNavigation,
+    accountNavigation,
+  ];
 
   return (
     <>
       <ReminderWatcher />
 
-      <div className="app-background" aria-hidden="true">
+      <div
+        className="app-background"
+        aria-hidden="true"
+      >
         <span className="background-orb orb-one" />
+
         <span className="background-orb orb-two" />
+
         <span className="background-orb orb-three" />
+
         <span className="background-grid" />
       </div>
 
       <div className="app-shell">
         <aside className="sidebar">
           <div className="brand">
-            <span className="brand-mark">知</span>
+            <span
+              className="brand-mark"
+              aria-hidden="true"
+            >
+              知
+            </span>
 
             <span className="brand-text">
               <strong>知序</strong>
@@ -64,11 +127,24 @@ export default function AppLayout() {
                 key={item.to}
                 to={item.to}
                 end={item.end}
-                className={({ isActive }) =>
-                  isActive
-                    ? "nav-link active"
-                    : "nav-link"
-                }
+                className={({ isActive }) => {
+                  const classes = [
+                    "nav-link",
+                  ];
+
+                  if (isActive) {
+                    classes.push("active");
+                  }
+
+                  if (
+                    item.to === "/account" ||
+                    item.to === "/login"
+                  ) {
+                    classes.push("account-link");
+                  }
+
+                  return classes.join(" ");
+                }}
               >
                 <span
                   className="nav-icon"
@@ -77,7 +153,9 @@ export default function AppLayout() {
                   {item.icon}
                 </span>
 
-                <span>{item.label}</span>
+                <span className="nav-label">
+                  {item.label}
+                </span>
               </NavLink>
             ))}
           </nav>
@@ -85,7 +163,7 @@ export default function AppLayout() {
           <div className="install-section">
             <InstallAppButton />
           </div>
-          
+
           <div className="local-note">
             <span
               className="local-status-dot"
@@ -93,8 +171,17 @@ export default function AppLayout() {
             />
 
             <div>
-              <strong>本地安全模式</strong>
-              <span>数据仅保存在当前浏览器</span>
+              <strong>
+                {user
+                  ? "账户已登录"
+                  : "本地安全模式"}
+              </strong>
+
+              <span>
+                {user
+                  ? "云端账户服务已连接"
+                  : "数据仅保存在当前浏览器"}
+              </span>
             </div>
           </div>
         </aside>

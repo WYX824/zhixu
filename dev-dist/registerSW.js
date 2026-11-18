@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/zhixu/dev-sw.js?dev-sw', { scope: '/zhixu/', type: 'classic' })

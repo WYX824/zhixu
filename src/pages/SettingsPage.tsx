@@ -1,3 +1,4 @@
+import { supabase } from "../lib/supabase";
 import {
   useRef,
   useState,
@@ -246,6 +247,23 @@ export default function SettingsPage() {
     useState<string | null>(
       localStorage.getItem(LAST_BACKUP_KEY),
     );
+
+    async function testSupabaseConnection() {
+    const { data, error } =
+      await supabase.auth.getSession();
+
+    console.log(
+      "Supabase session:",
+      data.session,
+    );
+
+    if (error) {
+      console.error(error);
+      alert(`连接失败：${error.message}`);
+    } else {
+      alert("Supabase 连接成功");
+    }
+  }
 
   function showMessage(
     text: string,
@@ -623,6 +641,16 @@ export default function SettingsPage() {
               {permission === "granted"
                 ? "通知已开启"
                 : "开启通知"}
+            </button>
+            
+            <button
+              type="button"
+              className="secondary-button settings-button"
+              onClick={() =>
+                void testSupabaseConnection()
+              }
+            >
+              测试账户服务
             </button>
 
             <button
