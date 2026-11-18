@@ -1874,3 +1874,219 @@ a {
     font-size: 23px;
   }
 }
+.install-section {
+  margin-top: auto;
+  margin-bottom: 10px;
+}
+
+.install-app-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 10px 12px;
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #6073ec,
+      #485bd4
+    );
+  border: 0;
+  border-radius: 11px;
+  box-shadow:
+    0 8px 20px rgba(82, 103, 232, 0.22);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.install-complete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px;
+  color: #167453;
+  background: #eaf9f3;
+  border: 1px solid #bce5d3;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.install-help-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(20, 28, 48, 0.46);
+  backdrop-filter: blur(7px);
+}
+
+.install-help-card {
+  position: relative;
+  width: min(420px, 100%);
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid rgba(126, 141, 169, 0.22);
+  border-radius: 18px;
+  box-shadow:
+    0 25px 70px rgba(22, 33, 65, 0.24);
+  animation:
+    install-card-enter 0.26s ease both;
+}
+
+.install-help-card h2 {
+  margin: 0 0 13px;
+  font-size: 20px;
+}
+
+.install-help-card p,
+.install-help-card li {
+  color: #626d82;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.install-help-card ol {
+  padding-left: 22px;
+}
+
+.install-help-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  color: #687386;
+  background: #f3f5f9;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+@keyframes install-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@media (max-width: 700px) {
+  body {
+    padding-bottom:
+      calc(74px + env(safe-area-inset-bottom));
+  }
+
+  .app-shell {
+    display: block;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: block;
+    width: auto;
+    height: auto;
+    padding:
+      8px 10px
+      calc(8px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.92);
+    border-top: 1px solid var(--line);
+    border-right: 0;
+    box-shadow:
+      0 -10px 35px rgba(31, 44, 82, 0.1);
+    backdrop-filter: blur(18px);
+  }
+
+  .brand,
+  .local-note,
+  .install-section {
+    display: none;
+  }
+
+  .sidebar nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+
+  .nav-link {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    padding: 7px 3px;
+    border-radius: 10px;
+    font-size: 10px;
+  }
+
+  .nav-link > span:last-child {
+    display: block;
+  }
+
+  .nav-icon {
+    width: 23px;
+    height: 23px;
+    font-size: 16px;
+  }
+
+  .nav-link::before {
+    top: auto;
+    right: 25%;
+    bottom: -8px;
+    left: 25%;
+    width: auto;
+    height: 3px;
+    border-radius: 5px 5px 0 0;
+    transform: none;
+  }
+
+  .nav-link.active::before {
+    height: 3px;
+  }
+
+  .page-content {
+    padding:
+      calc(18px + env(safe-area-inset-top))
+      14px
+      30px;
+  }
+
+  .page-transition {
+    width: 100%;
+  }
+
+  .page-header {
+    gap: 12px;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions > * {
+    flex: 1;
+  }
+
+  .home-statistics,
+  .task-statistics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pdf-drop-zone {
+    padding: 40px 15px;
+  }
+}

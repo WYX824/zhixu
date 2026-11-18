@@ -1,3 +1,4 @@
+import InstallAppButton from "./InstallAppButton";
 import {
   NavLink,
   Outlet,
@@ -81,6 +82,10 @@ export default function AppLayout() {
             ))}
           </nav>
 
+          <div className="install-section">
+            <InstallAppButton />
+          </div>
+          
           <div className="local-note">
             <span
               className="local-status-dot"
